@@ -10,7 +10,7 @@ let dashPos;
 
 function setup() {
   createCanvas(canvasHeight, canvasHeight);
-  dashPos = (obj.dashboardHeight/100) * canvasHeight;
+  dashPos = (obj.dashboardHeight / 100) * canvasHeight;
   colWidth = width / obj.numCols;
   rowHeight = (canvasHeight - dashPos) / obj.numRows;
   molecules = [];
@@ -41,6 +41,7 @@ function draw() {
   splitObjectIntoGrid();
 
   drawGraph();
+  drawStats();
 
   obj.gridState ? drawGrid() : null;
 
@@ -243,10 +244,9 @@ function drawGraph() {
     recHeight: recHeight
   });
 
-
   push();
 
-  translate(350, 975)
+  translate(400, 940)
   graphArray.forEach(function(data, index) {
     noStroke();
 
@@ -264,6 +264,18 @@ function drawGraph() {
   });
 
   pop();
+
+  textAlign(LEFT);
+  fill(255);
+  textSize(28);
+  text('No. of Molecules: ' + molecules.length, 85, 850);
+  text('Healthy: ' + numHealthy.length, 85, 880);
+  text('Infected: ' + numInfected.length, 85, 910);
+  text('Recovered: ' + numRecovered.length, 85, 940);
+
+}
+
+function drawStats() {
 
 }
 

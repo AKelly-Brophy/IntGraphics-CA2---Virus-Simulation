@@ -4,9 +4,9 @@ let obj = {
   numCols: 2,
   showText: true,
   loopState: true,
-  gridState: false,
+  gridState: true,
   lineState: false,
-  dashboardHeight: 30,
+  dashboardHeight: 26,
   minMoleculeSize: 10,
   maxMoleculeSize: 20,
   infectionRate: 0.5,
@@ -43,7 +43,7 @@ section01.add(obj, 'gridState').onChange(function() {
 section01.add(obj, 'lineState').onChange(function() {
   draw()
 });
-section01.add(obj, 'dashboardHeight').min(15).max(40).step(5).onChange(function() {
+section01.add(obj, 'dashboardHeight').min(20).max(36).step(2).onChange(function() {
   setup();
   draw();
 })
