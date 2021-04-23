@@ -6,7 +6,7 @@ let obj = {
   loopState: true,
   gridState: false,
   lineState: false,
-  dashboardHeight: 400,
+  dashboardHeight: 30,
   minMoleculeSize: 10,
   maxMoleculeSize: 20,
   infectionRate: 0.5,
@@ -19,7 +19,7 @@ var gui = new dat.gui.GUI();
 gui.remember(obj);
 
 section01 = gui.addFolder('Layout');
-section01.add(obj, 'numOfMolecules').min(0).max(800).step(1).onChange(function() {
+section01.add(obj, 'numOfMolecules').min(2).max(500).step(1).onChange(function() {
   setup();
   draw();
 });
@@ -43,7 +43,7 @@ section01.add(obj, 'gridState').onChange(function() {
 section01.add(obj, 'lineState').onChange(function() {
   draw()
 });
-section01.add(obj, 'dashboardHeight').onChange(function() {
+section01.add(obj, 'dashboardHeight').min(15).max(40).step(5).onChange(function() {
   setup();
   draw();
 })
@@ -65,7 +65,7 @@ section03.add(obj, 'infectionRate').min(0.1).max(1).step(0.1).onChange(function(
   setup();
   draw();
 });
-section03.add(obj, 'infectionLifetime').min(100).max(5000).step(10).onChange(function() {
+section03.add(obj, 'infectionLifetime').min(100).max(5000).step(100).onChange(function() {
   setup();
   draw();
 });

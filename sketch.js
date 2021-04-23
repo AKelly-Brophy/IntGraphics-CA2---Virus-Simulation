@@ -5,11 +5,14 @@ let colWidth, rowHeight;
 let graphHeight = 100;
 let checkNum = 0;
 let percentOfInfected = 0.3;
+let canvasHeight = 1000;
+let dashPos;
 
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(canvasHeight, canvasHeight);
+  dashPos = (obj.dashboardHeight/100) * canvasHeight;
   colWidth = width / obj.numCols;
-  rowHeight = height / obj.numRows;
+  rowHeight = (canvasHeight - dashPos) / obj.numRows;
   molecules = [];
   graphArray = [];
 
@@ -33,11 +36,7 @@ function setup() {
 
 function draw() {
 
-  background(0);
-
-  molecules.forEach((molecule) => {
-    molecule.reset();
-  });
+  background(20);
 
   splitObjectIntoGrid();
 
@@ -89,7 +88,7 @@ function checkIntersections(_collection) {
               _py: moleculeB.position.y,
               _vx: moleculeB.velocity.x,
               _vy: moleculeB.velocity.y,
-              _timeCreated: frameCount,
+              _frameCreated: frameCount,
               _lifeLength: moleculeB.lifeLength
             };
             //replace moleculeB with tempObj
@@ -107,7 +106,7 @@ function checkIntersections(_collection) {
                 _py: moleculeA.position.y,
                 _vx: moleculeA.velocity.x,
                 _vy: moleculeA.velocity.y,
-                _timeCreated: frameCount,
+                _frameCreated: frameCount,
                 _lifeLength: moleculeA.lifeLength
               };
               //replace moleculeA with tempObj2

@@ -5,10 +5,8 @@ class Molecule {
     this.index = _i;
     this.velocity = createVector(_vx, _vy);
     this.color = color(0, 255, 0);
-    // this.intersectingColor = color(0, 60, 0);
     this.currentColor = this.color;
     this.frame = frameCount;
-    // this.lifeLength = _lifeLength;
   }
 
   render() {
@@ -22,7 +20,6 @@ class Molecule {
       color(0),
       text(this.index, this.position.x, this.position.y + 6)) : null;
   }
-
 
   isIntersecting(_molecule) {
     let indexValue = _molecule.index;
@@ -73,16 +70,7 @@ class Molecule {
 
     }
     return check;
-
   }
-  // 
-  // changeColor() {
-  //   this.currentColor = this.intersectingColor;
-  // }
-  //
-  // reset() {
-  //   this.currentColor = this.color;
-  // }
 
   //need to add dashboard height restriction in here
   step() {
@@ -90,7 +78,7 @@ class Molecule {
     (this.position.x > width - this.radius || this.position.x < 0 + this.radius) ?
     this.velocity.x *= -1: null;
 
-    (this.position.y > height - this.radius || this.position.y < 0 + this.radius) ?
+    (this.position.y > (height - dashPos) - this.radius || this.position.y < 0 + this.radius) ?
     this.velocity.y *= -1: null;
 
     this.position.x += this.velocity.x;
