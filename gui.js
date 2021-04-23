@@ -44,28 +44,32 @@ section01.add(obj, 'lineState').onChange(function() {
   draw()
 });
 section01.add(obj, 'dashboardHeight').onChange(function() {
+  setup();
   draw();
 })
 
-section02 = gui.addFolder('Design');
-
-section02.add(obj, 'minMoleculeSize').min(1).max(75).step(1).onChange(function() {
-  setup();
-  draw()
-});
-section02.add(obj, 'maxMoleculeSize').min(1).max(50).step(1).onChange(function() {
-  setup();
-  draw()
-});
+// section02 = gui.addFolder('Design');
+//
+// section02.add(obj, 'minMoleculeSize').min(1).max(75).step(1).onChange(function() {
+//   setup();
+//   draw()
+// });
+// section02.add(obj, 'maxMoleculeSize').min(1).max(50).step(1).onChange(function() {
+//   setup();
+//   draw()
+// });
 
 section03 = gui.addFolder('Infection');
 
 section03.add(obj, 'infectionRate').min(0.1).max(1).step(0.1).onChange(function() {
+  setup();
   draw();
 });
 section03.add(obj, 'infectionLifetime').min(100).max(5000).step(10).onChange(function() {
+  setup();
   draw();
 });
 section03.add(obj, 'socialDistancing').onChange(function() {
+  setup();
   draw();
 });

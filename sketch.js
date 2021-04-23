@@ -93,9 +93,7 @@ function checkIntersections(_collection) {
               _lifeLength: moleculeB.lifeLength
             };
             //replace moleculeB with tempObj
-            // console.log(tempObj._i);
             molecules.splice(tempObj._i, 1, new Infected(tempObj));
-            // console.log(molecules);
           }
         } else {
           if (moleculeB.constructor.name === "Infected" && moleculeA.constructor.name === "Healthy") {
@@ -113,9 +111,7 @@ function checkIntersections(_collection) {
                 _lifeLength: moleculeA.lifeLength
               };
               //replace moleculeA with tempObj2
-              // console.log(tempObj2._i);
               molecules.splice(tempObj2._i, 1, new Infected(tempObj2));
-              // console.log(molecules);
             }
           }
         }
@@ -133,7 +129,8 @@ The new array moleculeCollection is filled by first using .filter, then .map
 .filter lets us take specifically the x position of i, and the y position of j, while .map lets us return specifically
 the index of each object*/
 function splitObjectIntoGrid() {
-  //WE NEED TO HAVE L CHECKER CODE IN HERE TOO - DUPLICATE SECTION BELOW AND CHANGE RELEVANT I and J VALUES
+
+  //NEED TO HAVE L CHECKER CODE IN HERE TOO - DUPLICATE SECTION BELOW AND CHANGE RELEVANT I and J VALUES
   checkNum = 0;
 
   for (let j = 0; j < obj.numRows; j++) {
@@ -195,7 +192,7 @@ function drawGrid() {
 //this function draw the graph of the rate of infection over time
 //INSERT EXPLANATION FOR THIS HERE
 function drawGraph() {
-  //NEED TO DRAW RECTANGLES
+
   let numInfected = molecules.filter(molecule => molecule.constructor.name == "Infected");
   let numHealthy = molecules.filter(molecule => molecule.constructor.name == "Healthy");
   let numRecovered = molecules.filter(molecule => molecule.constructor.name == "Recovered");
@@ -216,7 +213,7 @@ function drawGraph() {
     healthHeight: healthHeight,
     recHeight: recHeight
   });
-  // console.log(graphArray);
+
 
   push();
 
@@ -242,8 +239,7 @@ function drawGraph() {
 }
 
 function recover() {
-  //INSERT CODE TO CHANGE INFECTED OBJECTS TO RECOVERED OBJECTS HERE
-  //needs to use splice() so check previous examples for that?
+
   molecules.forEach((molecule) => {
     if (molecule.constructor.name === "Infected") {
       let tempObj3 = {
