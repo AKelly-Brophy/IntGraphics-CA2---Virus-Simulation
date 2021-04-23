@@ -7,7 +7,7 @@ class Molecule {
     this.color = color(0, 255, 0);
     // this.intersectingColor = color(0, 60, 0);
     this.currentColor = this.color;
-    // this.timeCreated = _timeCreated;
+    this.frame = frameCount;
     // this.lifeLength = _lifeLength;
   }
 
@@ -75,14 +75,14 @@ class Molecule {
     return check;
 
   }
-
-  changeColor() {
-    this.currentColor = this.intersectingColor;
-  }
-
-  reset() {
-    this.currentColor = this.color;
-  }
+  // 
+  // changeColor() {
+  //   this.currentColor = this.intersectingColor;
+  // }
+  //
+  // reset() {
+  //   this.currentColor = this.color;
+  // }
 
   //need to add dashboard height restriction in here
   step() {

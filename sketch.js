@@ -51,7 +51,7 @@ function draw() {
     molecule.render();
     molecule.step();
     //there might be a better way to do this
-    if ((molecule.lifeLength) === frameCount) {
+    if ((molecule.frame + molecule.lifeLength) == frameCount && molecule.constructor.name === "Infected") {
       recover();
     }
   });
@@ -130,7 +130,7 @@ The new array moleculeCollection is filled by first using .filter, then .map
 the index of each object*/
 function splitObjectIntoGrid() {
 
-  //NEED TO HAVE L CHECKER CODE IN HERE TOO - DUPLICATE SECTION BELOW AND CHANGE RELEVANT I and J VALUES
+  //I and J
   checkNum = 0;
 
   for (let j = 0; j < obj.numRows; j++) {
@@ -141,6 +141,36 @@ function splitObjectIntoGrid() {
         molecule.position.x < ((i + 1) * colWidth) &&
         molecule.position.y > j * rowHeight &&
         molecule.position.y < (j + 1) * rowHeight
+      ).map(molecule => molecule.index);
+
+      checkIntersections(moleculeCollection);
+    }
+  }
+
+  //I+1, J+1
+  for (let j = 0; j < obj.numRows; j++) {
+    for (let i = 0; i < obj.numCols; i++) {
+
+      let moleculeCollection = molecules.filter(molecule =>
+        molecule.position.x > (i * colWidth) &&
+        molecule.position.x < ((i + 1) * colWidth) &&
+        molecule.position.y > j * rowHeight &&
+        molecule.position.y < (j + 1) * rowHeight
+      ).map(molecule => molecule.index);
+
+      checkIntersections(moleculeCollection);
+    }
+  }
+
+  //I-1, J-1
+  for (let j = 0; j < obj.numRows; j++) {
+    for (let i = 0; i < obj.numCols; i++) {
+
+      let moleculeCollection = molecules.filter(molecule =>
+        molecule.position.x > (i * colWidth) &&
+        molecule.position.x < ((i - 1) * colWidth) &&
+        molecule.position.y > j * rowHeight &&
+        molecule.position.y < (j - 1) * rowHeight
       ).map(molecule => molecule.index);
 
       checkIntersections(moleculeCollection);
