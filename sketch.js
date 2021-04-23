@@ -1,21 +1,36 @@
+//INTERACTIVE GRAPHICS CA2 - VIRUS INFECTION SIMULATOR
+//This simulation is intended to showcase how an infection, such as a virus, can quickly and easily spread among a population and infect healthy members
+//It is much more simplified than in real life - for example, molecules can not die from the infection, and there are no measures in place to contain the spread
+//However, it shows just how easily infections can be spread, especially if the members of the population remain in close contact.
+
+//Referenced: https://www.washingtonpost.com/graphics/2020/world/corona-simulator/
+
+//Three different types of object - Healthy, Infected, and Recovered - needed to be made for the purpose of this simulation. The aim was that most molecules would start off as Healthy, then get infected by those already Infected at the start of the program, then, after a period of time, become Recovered molecules.
+
 let molecules = [];
 let grid = [];
 let graphArray = [];
 let colWidth, rowHeight;
 let graphHeight = 100;
 let checkNum = 0;
-let percentOfInfected = 0.3;
+let percentOfInfected = 0.5;
 let canvasHeight = 1000;
 let dashPos;
 
 function setup() {
+  //draws a 1000 by 1000 canvas
   createCanvas(canvasHeight, canvasHeight);
+  //draws the position of the stats dashboard
+  //creates a percentage value by dividing the dashboard height specified in the gui by 100, then multiplying that by the canvas height
   dashPos = (obj.dashboardHeight / 100) * canvasHeight;
   colWidth = width / obj.numCols;
   rowHeight = (canvasHeight - dashPos) / obj.numRows;
   molecules = [];
   graphArray = [];
 
+  //here we want to populate the molecules array - length of which is created in the gui - with both healthy and infected objects
+  //a random number is declared, and if the random number is less than the percent of infected molecules, a new infected molecule is placed in the array
+  //otherwise, a healthy one is placed instead.
   for (let i = 0; i < obj.numOfMolecules; i++) {
     let randomNum = Math.random();
 
@@ -30,43 +45,48 @@ function setup() {
     }
   }
 
+  //place every object on screen in a grid formation at start of program
   gridify();
+  //check if loop is turned on in gui
   checkLoop();
 }
 
 function draw() {
 
+  //creates an almost-black background
   background(20);
 
   splitObjectIntoGrid();
 
+  //draw dashboard features - stats and graph of infection and recovery over time
   drawGraph();
-  drawStats();
 
+  //if the gridState is toggled on in the gui - draw the grid created in the drawGrid() function
+  //otherwise - don't draw a grid
   obj.gridState ? drawGrid() : null;
 
+  //the original intent here was to implement a social distancing feature. This toggle, if checked on, would have activated this feature, and if checked off, would have disabled it.
   obj.socialDistancing ? distance() : null;
 
+  //render and move each molecule
+  //additionally, if a molecule's name is "Infected", and the frame and life length of that molecule combined equals to the current frame count, make the infected molecule recover.
   molecules.forEach((molecule) => {
     molecule.render();
     molecule.step();
-    //there might be a better way to do this
-    if ((molecule.frame + molecule.lifeLength) == frameCount && molecule.constructor.name === "Infected") {
+
+    //there might be a better way to do this, but it was never implemented.
+    if ((molecule.frame + molecule.lifeLength) === frameCount && molecule.constructor.name === "Infected") {
       recover();
     }
   });
 }
 
-//new function
-//Code is more efficient (less frame rate lags)
-//What it does:
-/*Behaves the same as the above function, but with one important difference
-This functions does accept a parameter - a new value called _collection
-This is used in the nested for loop instead of molecules.length
-This speeds up the intersection calculation process because instead of checking each molecule in the entire array for intersections,
-it only checks against each molecule in the _collection
-Therefore, if this function is called instead of checkIntersectionsOld(), it requires much less computation
-*/
+
+// This functions does accept a parameter - a new value called _collection
+// This is used in the nested for loop instead of molecules.length
+// This speeds up the intersection calculation process because instead of checking each molecule in the entire array for intersections,
+// it only checks against each molecule in the _collection
+// Therefore, if this function is called instead of checkIntersectionsOld(), it requires much less computation
 function checkIntersections(_collection) {
 
   for (let a = 0; a < _collection.length; a++) {
@@ -77,6 +97,11 @@ function checkIntersections(_collection) {
         stroke(125, 100);
         line(moleculeA.position.x, moleculeA.position.y, moleculeB.position.x, moleculeB.position.y);
       };
+
+      //the code below demonstrates how a healthy molecule can become infected
+      //if moleculeA is an infected molecule, and moleculeB a healthy molecule, moleculeB has a chance of becoming infected
+      //a random number between 0 and 1 is declared; if this is less than the infectionRate toggled in the gui, the healthy molecule is replaced with a new Infected object in the molecules array
+      //this is achieved using the splice() method
       if (moleculeA.isIntersecting(moleculeB)) {
         if (moleculeA.constructor.name === "Infected" && moleculeB.constructor.name === "Healthy") {
           let infChance = random(1);
@@ -92,10 +117,12 @@ function checkIntersections(_collection) {
               _frameCreated: frameCount,
               _lifeLength: moleculeB.lifeLength
             };
-            //replace moleculeB with tempObj
+            //replaces moleculeB with tempObj
             molecules.splice(tempObj._i, 1, new Infected(tempObj));
           }
-        } else {
+        }
+        //conversely, if moleculeB is an infected molecule, and moleculeA is healthy, moleculeA has a chance of becoming infected, just like above
+        else {
           if (moleculeB.constructor.name === "Infected" && moleculeA.constructor.name === "Healthy") {
             let infChance = random(1);
 
@@ -128,6 +155,8 @@ Uses a nested for loop - iterates first through numRows (j), then numCols (i)
 The new array moleculeCollection is filled by first using .filter, then .map
 .filter lets us take specifically the x position of i, and the y position of j, while .map lets us return specifically
 the index of each object*/
+
+//there was an attempt to utilise the more efficient "L-checker" method of checking for intersections here, but it was largely unsuccessful.
 function splitObjectIntoGrid() {
 
   //I and J
@@ -220,7 +249,8 @@ function drawGrid() {
 }
 
 //this function draw the graph of the rate of infection over time
-//INSERT EXPLANATION FOR THIS HERE
+//using .filter, each type of molecule is placed in its own array, called numInfected, numHealthy, and numRecovered respectively.
+//then, to draw the graph, the Javascript map() function is used to get the values - such as the length of each previous array, and the total number of molecules - needed to draw each rectangle in the graph
 function drawGraph() {
 
   let numInfected = molecules.filter(molecule => molecule.constructor.name == "Infected");
@@ -231,10 +261,12 @@ function drawGraph() {
   healthHeight = map(numHealthy.length, 0, obj.numOfMolecules, 0, graphHeight);
   recHeight = map(numRecovered.length, 0, obj.numOfMolecules, 0, graphHeight);
 
+  //if the length of the values in the graph exceeds 500 - the graph will "move" to the left, showing the remaining values
   if (graphArray.length >= 500) {
     graphArray.shift();
   }
 
+  //places all the values created by filtering and mapping the molecules array into the graph array created at the start of the program
   graphArray.push({
     numInfected: numInfected.length,
     numHealthy: numHealthy.length,
@@ -244,6 +276,7 @@ function drawGraph() {
     recHeight: recHeight
   });
 
+  //start drawing graph
   push();
 
   translate(400, 940)
@@ -264,7 +297,9 @@ function drawGraph() {
   });
 
   pop();
+  //end drawing graph
 
+  //displays the stats of the simulation as text on screen. This text is aligned left and has a white colour.
   textAlign(LEFT);
   fill(255);
   textSize(28);
@@ -275,10 +310,7 @@ function drawGraph() {
 
 }
 
-function drawStats() {
-
-}
-
+//function called earlier in the program for when a molecule meets the necessary conditions to recover. If the molecule is and Infected molecule, a new object - like in the checkIntersections() function above - is placed into the molecules array in place of the previous Infected object, using the splice() method.
 function recover() {
 
   molecules.forEach((molecule) => {
@@ -292,21 +324,22 @@ function recover() {
         _vy: molecule.velocity.y
       };
 
-      console.log(tempObj3._i);
+      // console.log(tempObj3._i);
       molecules.splice(tempObj3._i, 1, new Recovered(tempObj3));
     }
   });
 
-  console.log("Recovered");
+  // console.log("Recovered");
 }
 
-//ADD IN SOCIAL DISTANCING METHOD
+//this was intended to be called when the social distancing toggle was checked in the gui. it would implement code that would force each molecule to stay apart, in order to slow the spread of infection.
 function distance() {
-  //plus or minus radius
+  //
 }
 
 //if loopState is toggled on in the gui, redraw each frame
-//if not - don't
+//if it isn't - don't redraw each frame
+//image will be static
 function checkLoop() {
   if (obj.loopState) {
     loop();
