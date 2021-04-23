@@ -1,5 +1,5 @@
 class Molecule {
-  constructor({_px, _py, _r = 20, _i, _vx = random(-2.5, 2.5), _vy = random(-2.5, 2.5), _timeCreated, _lifeLength}) {
+  constructor({_px, _py, _r = 20, _i, _vx = random(-2.5, 2.5), _vy = random(-2.5, 2.5)}) {
     this.position = createVector(_px, _py);
     this.radius = _r;
     this.index = _i;
@@ -7,8 +7,8 @@ class Molecule {
     this.color = color(0, 255, 0);
     // this.intersectingColor = color(0, 60, 0);
     this.currentColor = this.color;
-    this.timeCreated = _timeCreated;
-    this.lifeLength = _lifeLength;
+    // this.timeCreated = _timeCreated;
+    // this.lifeLength = _lifeLength;
   }
 
   render() {
@@ -33,14 +33,12 @@ class Molecule {
     let gap = distance - this.radius - _molecule.radius;
     let check = (gap <= 0) ? true : false;
 
-    //need to fix if intersections less than 0//
-
     if (check) {
 
       let rHeading = resultantV.heading();
       let rDist = (resultantV.mag() - this.radius - fixedBall.radius) / 2;
 
-      // Here we thake away the calculated distance from the current position
+      // Here we take away the calculated distance from the current position
       let moveX = cos(rHeading) * rDist;
       let moveY = sin(rHeading) * rDist;
 
@@ -52,7 +50,6 @@ class Molecule {
 
       let dx = this.position.x - _molecule.position.x;
       let dy = this.position.y - _molecule.position.y;
-      // let dist = Math.sqrt(dx * dx + dy * dy);
 
       let normalX = dx / distance;
       let normalY = dy / distance;
@@ -79,22 +76,6 @@ class Molecule {
 
   }
 
-  //some of this can go into isIntersecting?
-  //less mathematical calculations = better processing
-  //incorporate "dock" code into isIntersecting
-  //use constrain() function to keep constant velocity
-  // dock(_molecule) {
-  //
-  //   // console.log("dock");
-  //   //
-  //   // This is where we want to dock it to
-  //
-  //
-  //
-  //
-  //   // console.log(molecules);
-  // }
-
   changeColor() {
     this.currentColor = this.intersectingColor;
   }
@@ -103,6 +84,7 @@ class Molecule {
     this.currentColor = this.color;
   }
 
+  //need to add dashboard height restriction in here
   step() {
 
     (this.position.x > width - this.radius || this.position.x < 0 + this.radius) ?

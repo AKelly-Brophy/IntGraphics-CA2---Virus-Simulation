@@ -1,10 +1,11 @@
 class Infected extends Molecule {
-  constructor({_px, _py, _r, _i, _vx, _vy, _color = color(255, 0, 0), _timeCreated, _lifeLength = obj.infectionLifetime}) {
-    super({_px, _py, _r, _i, _vx, _vy, _timeCreated});
+  constructor({_px, _py, _r, _i, _vx, _vy, _color = color(255, 0, 0), _frameCreated = frameCount, _lifeLength = obj.infectionLifetime}) {
+    //FRAMECREATED IS 0 BY DEFAULT - THIS SHOULD INCREMENT IN MAIN CODE
+    super({_px, _py, _r, _i, _vx, _vy});
     this.color = _color;
     // this.intersectingColor = _intersectingColor;
     this.currentColor = this.color;
-    this.timeCreated = _timeCreated;
+    this.frameCreated = _frameCreated;
     this.lifeLength = _lifeLength;
   }
 

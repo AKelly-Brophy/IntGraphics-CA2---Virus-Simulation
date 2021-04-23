@@ -6,7 +6,7 @@ let obj = {
   loopState: true,
   gridState: false,
   lineState: false,
-  dashboardHeight: 1000,
+  dashboardHeight: 400,
   minMoleculeSize: 10,
   maxMoleculeSize: 20,
   infectionRate: 0.5,

@@ -50,7 +50,8 @@ function draw() {
   molecules.forEach((molecule) => {
     molecule.render();
     molecule.step();
-    if ((molecule.lifeLength + molecule.timeCreated) === frameCount) {
+    //there might be a better way to do this
+    if ((molecule.lifeLength) === frameCount) {
       recover();
     }
   });
@@ -132,7 +133,7 @@ The new array moleculeCollection is filled by first using .filter, then .map
 .filter lets us take specifically the x position of i, and the y position of j, while .map lets us return specifically
 the index of each object*/
 function splitObjectIntoGrid() {
-
+  //WE NEED TO HAVE L CHECKER CODE IN HERE TOO - DUPLICATE SECTION BELOW AND CHANGE RELEVANT I and J VALUES
   checkNum = 0;
 
   for (let j = 0; j < obj.numRows; j++) {
@@ -222,12 +223,18 @@ function drawGraph() {
   translate(350, 975)
   graphArray.forEach(function(data, index) {
     noStroke();
+
+    //Infection rate over time shows as red on graph
     fill(255, 0, 0);
     rect(index, 0, 1, -data.infHeight);
+
+    //Healthy rate over time shows as green on graph
     fill(0, 255, 0);
     rect(index, -data.infHeight, 1, -data.healthHeight);
+
+    //Recovery rate over time shows as light purple on graph
     fill(204, 153, 255);
-    rect();
+    rect(index, -data.healthHeight, 1, -data.recHeight);
   });
 
   pop();
